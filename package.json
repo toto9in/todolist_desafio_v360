@@ -1,0 +1,31 @@
+{
+  "name": "todolist_desafio_v360",
+  "version": "1.0.0",
+  "description": "case tecnico todolist v360",
+  "workspaces": [
+    "apps/*"
+  ],
+  "keywords": [
+    "nest",
+    "next",
+    "turborepo",
+    "next-auth",
+    "supabase"
+  ],
+
+  "author": "Antonio Alves Borges de Almeida",
+  "license": "ISC",
+  "packageManager": "npm@10.8.1",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.2",
+    "tsconfig": "*",
+    "turbo": "latest"
+  }
+}
