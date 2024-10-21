@@ -19,7 +19,7 @@ export const SignInCard = () => {
           height={24}
           width={24}
           alt="picture"
-        ></Image>
+        />
         <button onClick={() => signOut()}>Sign Out</button>
       </div>
     );
@@ -35,7 +35,7 @@ export const SignInCard = () => {
       </CardHeader>
       <CardContent className="grid gap-2">
         <Button
-          onClick={() => signIn("google")}
+          onClick={() => signIn("google", { callbackUrl: "/todos" })}
           variant="outline"
           size="lg"
           className="w-full justify-center"
