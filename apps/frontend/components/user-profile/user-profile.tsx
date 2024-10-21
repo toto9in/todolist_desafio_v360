@@ -16,21 +16,26 @@ import { LogOut } from "lucide-react";
 export const UserProfile = () => {
   const { data: session } = useSession();
 
+  const imageUrl = session?.user?.image;
+  const userName = session?.user?.name;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full justify-start items-center gap-2 pl-0"
+          className="w-full justify-start items-center gap-2 pl-0 hover:bg-purple-100 hover:text-purple-700"
         >
-          <Image
-            className="rounded-full"
-            src={session?.user?.image ?? "/default-profile.png"}
-            height={28}
-            width={28}
-            alt="picture"
-          />
-          <span className="font-semibold">{session?.user?.name}</span>
+          {imageUrl && (
+            <Image
+              className="rounded-full"
+              src={session?.user?.image ?? "/default-profile.png"}
+              height={28}
+              width={28}
+              alt="picture"
+            />
+          )}
+          <span className="font-semibold">{userName}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -39,7 +44,7 @@ export const UserProfile = () => {
         <DropdownMenuItem>
           <Button
             variant="ghost"
-            className="w-full flex justify-start"
+            className="w-full flex justify-start hover:bg-purple-100 hover:text-purple-700"
             onClick={() => signOut({ callbackUrl: "/" })}
           >
             <LogOut />
