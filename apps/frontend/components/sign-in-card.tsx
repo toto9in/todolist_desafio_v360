@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { V360LogoIcon } from "./v360-logo-icon";
 import Image from "next/image";
+import googlePic from "../public/google-icon.svg";
 
 export const SignInCard = () => {
   const { data: session } = useSession();
@@ -38,15 +39,10 @@ export const SignInCard = () => {
           onClick={() => signIn("google", { callbackUrl: "/todos" })}
           variant="outline"
           size="lg"
-          className="w-full justify-center"
+          className="w-full justify-center hover:bg-purple-100 hover:text-purple-700"
         >
           <div className="flex gap-3 items-center">
-            <Image
-              src="/google-icon.svg"
-              height={24}
-              width={24}
-              alt="google-icon"
-            />
+            <Image src={googlePic} height={24} width={24} alt="google-icon" />
             <span className="text-md font-bold">Logar com Google</span>
           </div>
         </Button>
