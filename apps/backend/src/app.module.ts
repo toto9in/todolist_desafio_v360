@@ -10,6 +10,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { TodosModule } from './todos/todos.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       global: true,
     }),
     PrismaModule,
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy, JwtStrategy, PrismaService],

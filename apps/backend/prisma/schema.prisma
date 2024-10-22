@@ -1,12 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "omitApi"]
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  schemas = ["public", "next_auth"]
+  schemas   = ["public", "next_auth"]
   directUrl = env("DIRECT_URL")
 }
 
@@ -60,4 +60,64 @@ model verification_tokens {
 
   @@unique([token, identifier], map: "token_identifier_unique")
   @@schema("next_auth")
+}
+
+enum LabelProjectsType {
+  USER
+  SYSTEM
+
+  @@schema("public")
+}
+
+model Projects {
+  id     Int               @id @default(autoincrement())
+  userId String
+  name   String
+  type   LabelProjectsType
+  Todos  Todos[]
+
+  @@map("projects")
+  @@schema("public")
+}
+
+model Labels {
+  id        Int               @id @default(autoincrement())
+  name      String
+  type      LabelProjectsType
+  todos     Todos[]           @relation("TodoLabels")
+  TodoLabel TodoLabel[]
+
+  @@map("labels")
+  @@schema("public")
+}
+
+model Todos {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  projectId   Int?
+  taskName    String
+  description String?
+  dueDate     DateTime
+  priority    String?
+  isCompleted Boolean  @default(false)
+  parentId    Int?     @unique
+
+  project   Projects?   @relation(fields: [projectId], references: [id])
+  parent    Todos?      @relation("TodoHierarchy", fields: [parentId], references: [id])
+  subTodos  Todos[]     @relation("TodoHierarchy")
+  labels    Labels[]    @relation("TodoLabels")
+  TodoLabel TodoLabel[]
+
+  @@map("todos")
+  @@schema("public")
+}
+
+model TodoLabel {
+  todoId  Int
+  labelId Int
+  todo    Todos  @relation(fields: [todoId], references: [id])
+  label   Labels @relation(fields: [labelId], references: [id])
+
+  @@id([todoId, labelId])
+  @@schema("public")
 }

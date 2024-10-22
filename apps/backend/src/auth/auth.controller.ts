@@ -1,8 +1,8 @@
 import { Controller, Get, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
-import { HttpUser } from 'src/decorators/http-user.decorator';
-import { GoogleOauthGuard } from 'src/guards/http-google-oauth.guard';
+import { GetUser } from '../decorators/get-user.decorator';
+import { GoogleOauthGuard } from '../guards/http-google-oauth.guard';
 import { GoogleLoginUserDto } from './dto/google-login.dto';
 
 @UseGuards(GoogleOauthGuard)
@@ -13,7 +13,7 @@ export class AuthController {
   async googleAuth(@Req() _req: Request) {}
 
   @Get('google-redirect')
-  googleAuthRedirect(@HttpUser() user: GoogleLoginUserDto) {
+  googleAuthRedirect(@GetUser() user: GoogleLoginUserDto) {
     return this.authService.googleLogin(user);
   }
 }
