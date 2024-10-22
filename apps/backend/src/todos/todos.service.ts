@@ -37,13 +37,28 @@ export class TodosService {
     return todo;
   }
 
-  async findAll(userId: string) {
+  async getInCompleteTodos(userId: string) {
     const todos = this.prisma.todos.findMany({
       omit: {
         userId: true,
       },
       where: {
         userId: userId,
+        isCompleted: false,
+      },
+    });
+
+    return todos;
+  }
+
+  async getCompletedTodos(userId: string) {
+    const todos = this.prisma.todos.findMany({
+      omit: {
+        userId: true,
+      },
+      where: {
+        userId: userId,
+        isCompleted: true,
       },
     });
 

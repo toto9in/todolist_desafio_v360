@@ -30,9 +30,14 @@ export class TodosController {
     return this.todosService.create(createTodoDto, user.userId);
   }
 
-  @Get()
-  findAll(@GetUser() user: GoogleLoginUserDto) {
-    return this.todosService.findAll(user.email);
+  @Get('incomplete')
+  getInComplete(@GetUser() user: { userId: string }) {
+    return this.todosService.getInCompleteTodos(user.userId);
+  }
+
+  @Get('completed')
+  getCompleted(@GetUser() user: { userId: string }) {
+    return this.todosService.getCompletedTodos(user.userId);
   }
 
   @Get(':id')
