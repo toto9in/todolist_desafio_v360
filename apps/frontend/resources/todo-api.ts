@@ -1,5 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { IResultGetTodos } from './interfaces/result-get-todos.interface';
+import { IResultGetProjects } from './interfaces/result-get-projects.interface';
+import { IResultGetLabels } from './interfaces/result-get-labels.interface';
+import { ICreateTaskDto } from './interfaces/create-task-dto.interface';
 
 export class TodoApi {
   readonly axiosInstance: AxiosInstance;
@@ -78,7 +81,28 @@ export class TodoApi {
     }
   }
 
-  async addTodo(todo: any) {
-    return this.axiosInstance.post('/todos', todo);
+  async getProjects() {
+    try {
+      const { data } =
+        await this.axiosInstance.get<IResultGetProjects>(`projects`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
+    }
+  }
+
+  async getLabels() {
+    try {
+      const { data } = await this.axiosInstance.get<IResultGetLabels>(`labels`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching labels:', error);
+      throw error;
+    }
+  }
+
+  async createTask(createTaskDto: ICreateTaskDto) {
+    return this.axiosInstance.post('todos', createTaskDto);
   }
 }

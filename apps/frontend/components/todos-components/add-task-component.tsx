@@ -21,6 +21,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import {
+  useCreateTask,
+  useGetLabels,
+  useGetProjects,
+} from '@/resources/hooks/todo.hooks';
+import { useCallback, useMemo } from 'react';
+import labelsRecord from '@/resources/utils/labels-record';
+import projectsRecord from '@/resources/utils/projects-record';
+import { ICreateTaskDto } from '@/resources/interfaces/create-task-dto.interface';
+import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
 
 const createTaskFormSchema = z.object({
   taskName: z.string().min(2, {
@@ -33,6 +44,15 @@ const createTaskFormSchema = z.object({
   labelId: z.number().optional().nullable(),
 });
 
+const defaultValues = {
+  taskName: '',
+  description: '',
+  dueDate: new Date(),
+  priority: '4',
+  projectId: 1,
+  labelId: null,
+};
+
 export default function AddTaskComponent({
   setShowAddTask,
 }: {
@@ -44,20 +64,70 @@ export default function AddTaskComponent({
       taskName: '',
       description: '',
       dueDate: new Date(),
-      priority: '1',
+      priority: '4',
       projectId: 1,
       labelId: null,
     },
   });
 
-  function onSubmit(data: z.infer<typeof createTaskFormSchema>) {}
+  const { toast } = useToast();
+
+  const { data: projectsData } = useGetProjects();
+
+  const { data: labelsData } = useGetLabels();
+
+  const createTask = useCreateTask();
+
+  const queryClient = useQueryClient();
+
+  const labelsOptions = useMemo(() => {
+    return labelsData?.map((label) => ({
+      name: labelsRecord[label.name],
+      id: label.id.toString(),
+    }));
+  }, [labelsData]);
+
+  const projectOptions = useMemo(() => {
+    return projectsData?.map((project) => ({
+      name: projectsRecord[project.name],
+      id: project.id.toString(),
+    }));
+  }, [projectsData]);
+
+  const onSubmit = useCallback(
+    async (data: z.infer<typeof createTaskFormSchema>) => {
+      const createTaskDto: ICreateTaskDto = {
+        projectId: data.projectId,
+        taskName: data.taskName,
+        description: data.description,
+        dueDate: new Date().toISOString(),
+        priority: data.priority,
+        labelId: data.labelId ?? null,
+        parentId: null,
+      };
+
+      await createTask.mutateAsync(createTaskDto).then(async () => {
+        setShowAddTask(false);
+        await queryClient.invalidateQueries({
+          queryKey: ['get-incomplete-todos'],
+        });
+        toast({
+          title: `Tarefa adicionada`,
+          duration: 3000,
+        });
+
+        form.reset({ ...defaultValues });
+      });
+    },
+    [createTask, queryClient, setShowAddTask, form, toast]
+  );
 
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 border-2 p-2 border-gray-200 my-2 rounded-xl px-3 pt-4 border-foreground/20"
+          className="flex flex-col space-y-2 border-2 p-2 border-gray-200 my-2 rounded-xl px-3 pt-4 border-foreground/20"
         >
           <FormField
             control={form.control}
@@ -88,7 +158,6 @@ export default function AddTaskComponent({
                     <Textarea
                       id="description"
                       placeholder="Descrição"
-                      required
                       className="resize-none"
                       {...field}
                     />
@@ -98,7 +167,7 @@ export default function AddTaskComponent({
             )}
           />
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 md:flex-row md:gap-2 ">
             <FormField
               control={form.control}
               name="dueDate"
@@ -141,10 +210,7 @@ export default function AddTaskComponent({
               name="priority"
               render={({ field }) => (
                 <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value?.toString()}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={'4'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Prioridade" />
@@ -172,14 +238,15 @@ export default function AddTaskComponent({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Prioridade" />
+                        <SelectValue placeholder="Etiqueta" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1">Prioridade 1</SelectItem>
-                      <SelectItem value="2">Prioridade 2</SelectItem>
-                      <SelectItem value="3">Prioridade 3</SelectItem>
-                      <SelectItem value="4">Prioridade 4</SelectItem>
+                      {labelsOptions?.map((label, index) => (
+                        <SelectItem key={index} value={label.id}>
+                          {label.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -188,7 +255,7 @@ export default function AddTaskComponent({
           </div>
 
           <CardFooter className="flex w-full flex-col lg:flex-row lg:justify-between gap-2 border-t-2 pt-3">
-            <div className=" w-full flex gap-3 justify-between">
+            <div className="flex flex-col w-full md:flex-row gap-3 justify-between">
               <FormField
                 control={form.control}
                 name="projectId"
@@ -202,14 +269,15 @@ export default function AddTaskComponent({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Prioridade" />
+                          <SelectValue placeholder="Projeto" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="1">Prioridade 1</SelectItem>
-                        <SelectItem value="2">Prioridade 2</SelectItem>
-                        <SelectItem value="3">Prioridade 3</SelectItem>
-                        <SelectItem value="4">Prioridade 4</SelectItem>
+                        {projectOptions?.map((label, index) => (
+                          <SelectItem key={index} value={label.id}>
+                            {label.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormItem>

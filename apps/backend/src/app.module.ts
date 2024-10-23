@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TodosModule } from './todos/todos.module';
+import { ProjectsModule } from './projects/projects.module';
+import { LabelsModule } from './labels/labels.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { TodosModule } from './todos/todos.module';
     }),
     PrismaModule,
     TodosModule,
+    ProjectsModule,
+    LabelsModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy, JwtStrategy, PrismaService],

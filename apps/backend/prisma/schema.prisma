@@ -83,9 +83,10 @@ model Projects {
 model Labels {
   id        Int               @id @default(autoincrement())
   name      String
+  userId    String?
   type      LabelProjectsType
-  todos     Todos[]           @relation("TodoLabels")
-  TodoLabel TodoLabel[]
+  todos     Todos[] 
+
 
   @@map("labels")
   @@schema("public")
@@ -95,6 +96,7 @@ model Todos {
   id          Int      @id @default(autoincrement())
   userId      String
   projectId   Int?
+  labelId     Int?
   taskName    String
   description String?
   dueDate     DateTime
@@ -105,19 +107,8 @@ model Todos {
   project   Projects?   @relation(fields: [projectId], references: [id])
   parent    Todos?      @relation("TodoHierarchy", fields: [parentId], references: [id])
   subTodos  Todos[]     @relation("TodoHierarchy")
-  labels    Labels[]    @relation("TodoLabels")
-  TodoLabel TodoLabel[]
+  label     Labels?   @relation(fields: [labelId], references: [id])
 
   @@map("todos")
-  @@schema("public")
-}
-
-model TodoLabel {
-  todoId  Int
-  labelId Int
-  todo    Todos  @relation(fields: [todoId], references: [id])
-  label   Labels @relation(fields: [labelId], references: [id])
-
-  @@id([todoId, labelId])
   @@schema("public")
 }

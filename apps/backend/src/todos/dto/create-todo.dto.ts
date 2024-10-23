@@ -1,6 +1,4 @@
-import { Type } from 'class-transformer';
 import {
-  IsArray,
   IsDate,
   IsNotEmpty,
   IsNumber,
@@ -11,7 +9,7 @@ import {
 export class CreateTodoDto {
   @IsNumber()
   @IsOptional()
-  projectId: number;
+  projectId: number | null;
 
   @IsString()
   @IsNotEmpty()
@@ -29,9 +27,11 @@ export class CreateTodoDto {
   @IsOptional()
   priority: string;
 
-  @IsArray()
-  @Type(() => Number)
-  @IsNumber({}, { each: true })
+  @IsNumber()
   @IsOptional()
-  labelsIds: number[];
+  labelId: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  parentId: number | null;
 }

@@ -8,7 +8,7 @@ export class TodosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createTodoDto: CreateTodoDto, userId: string) {
-    const { projectId, labelsIds, ...todoData } = createTodoDto;
+    const { projectId, labelId, parentId, ...todoData } = createTodoDto;
 
     if (projectId) {
       const project = await this.prisma.projects.findUnique({
@@ -20,17 +20,23 @@ export class TodosService {
       }
     }
 
-    // TODO: verificar se todos os labelsIds existem
-    // se tiver labelsIds, verificar se todas as labels existem, se não existir, retornar erro
+    if (labelId) {
+      const label = await this.prisma.labels.findUnique({
+        where: { id: labelId },
+      });
+
+      if (!label) {
+        return new NotFoundException(`Label with ID ${labelId} not found`);
+      }
+    }
 
     const todo = await this.prisma.todos.create({
       data: {
         ...todoData,
         userId,
-        project: projectId ? { connect: { id: projectId } } : undefined,
-        labels: labelsIds
-          ? { connect: labelsIds.map((id) => ({ id })) }
-          : undefined,
+        projectId: projectId,
+        labelId: labelId,
+        parentId: parentId,
       },
     });
 

@@ -25,7 +25,6 @@ export class TodosController {
     @Body() createTodoDto: CreateTodoDto,
     @GetUser() user: { userId: string },
   ) {
-    console.log(user);
     return this.todosService.create(createTodoDto, user.userId);
   }
 
