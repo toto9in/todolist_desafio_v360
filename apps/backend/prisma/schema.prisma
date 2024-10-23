@@ -71,7 +71,7 @@ enum LabelProjectsType {
 
 model Projects {
   id     Int               @id @default(autoincrement())
-  userId String
+  userId String?
   name   String
   type   LabelProjectsType
   Todos  Todos[]

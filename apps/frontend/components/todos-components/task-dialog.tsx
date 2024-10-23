@@ -44,7 +44,7 @@ export default function TaskDialog({ data }: TaskDialogProps) {
       //   },
       {
         labelName: 'Due date',
-        value: format(dueDate || new Date(), 'MMM dd yyyy'),
+        value: format(new Date(dueDate) || new Date(), 'MMM dd yyyy'),
         icon: <Calendar className="w-4 h-4 text-primary capitalize" />,
       },
       {

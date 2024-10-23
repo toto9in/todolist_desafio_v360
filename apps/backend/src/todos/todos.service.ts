@@ -45,6 +45,10 @@ export class TodosService {
       where: {
         userId: userId,
         isCompleted: false,
+        parentId: null,
+      },
+      include: {
+        subTodos: true,
       },
     });
 
@@ -59,6 +63,10 @@ export class TodosService {
       where: {
         userId: userId,
         isCompleted: true,
+        parentId: null,
+      },
+      include: {
+        subTodos: true,
       },
     });
 
