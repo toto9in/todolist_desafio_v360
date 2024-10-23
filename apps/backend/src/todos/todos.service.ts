@@ -83,8 +83,40 @@ export class TodosService {
     return todo;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  check(userId: string, id: number) {
+    const todo = this.findOne(userId, id);
+
+    if (todo instanceof NotFoundException) {
+      return todo;
+    }
+
+    return this.prisma.todos.update({
+      where: {
+        userId: userId,
+        id,
+      },
+      data: {
+        isCompleted: true,
+      },
+    });
+  }
+
+  uncheck(userId: string, id: number) {
+    const todo = this.findOne(userId, id);
+
+    if (todo instanceof NotFoundException) {
+      return todo;
+    }
+
+    return this.prisma.todos.update({
+      where: {
+        userId: userId,
+        id,
+      },
+      data: {
+        isCompleted: false,
+      },
+    });
   }
 
   remove(id: number) {

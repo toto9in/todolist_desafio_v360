@@ -38,6 +38,46 @@ export class TodoApi {
     }
   }
 
+  async getIncompleteTodos() {
+    try {
+      const { data } =
+        await this.axiosInstance.get<IResultGetTodos>(`todos/incomplete`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
+  async getCompletedTodos() {
+    try {
+      const { data } =
+        await this.axiosInstance.get<IResultGetTodos>(`todos/completed`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
+  async checkTodo(id: number) {
+    try {
+      await this.axiosInstance.patch(`todos/${id}/check`);
+    } catch (error) {
+      console.error('Error checking todo:', error);
+      throw error;
+    }
+  }
+
+  async uncheckTodo(id: number) {
+    try {
+      await this.axiosInstance.patch(`todos/${id}/uncheck`);
+    } catch (error) {
+      console.error('Error unchecking todo:', error);
+      throw error;
+    }
+  }
+
   async addTodo(todo: any) {
     return this.axiosInstance.post('/todos', todo);
   }

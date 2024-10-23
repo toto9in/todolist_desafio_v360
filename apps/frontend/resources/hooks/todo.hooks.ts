@@ -1,15 +1,41 @@
 'use client';
 import { getTodoApiClientSide } from '../get-todo-api-client-side';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const todoApi = getTodoApiClientSide();
 
-export const useGetTodos = () => {
+export const useGetIncompleteTodos = () => {
   return useQuery({
-    queryKey: ['get-todos'],
+    queryKey: ['get-incomplete-todos'],
     queryFn: async () => {
-      return await todoApi.getTodos();
+      return await todoApi.getIncompleteTodos();
     },
-    refetchOnWindowFocus: false,
+  });
+};
+
+export const useGetCompletedTodos = () => {
+  return useQuery({
+    queryKey: ['get-completed-todos'],
+    queryFn: async () => {
+      return await todoApi.getCompletedTodos();
+    },
+  });
+};
+
+export const useSetCheckTodo = () => {
+  return useMutation({
+    mutationKey: ['set-check-todo'],
+    mutationFn: async (id: number) => {
+      return await todoApi.checkTodo(id);
+    },
+  });
+};
+
+export const useSetUncheckTodo = () => {
+  return useMutation({
+    mutationKey: ['set-uncheck-todo'],
+    mutationFn: async (id: number) => {
+      return await todoApi.uncheckTodo(id);
+    },
   });
 };

@@ -1,38 +1,35 @@
 'use client';
-import { useGetTodos } from '@/resources/hooks/todo.hooks';
-import { Checkbox } from '../ui/checkbox';
+import {
+  useGetIncompleteTodos,
+  useGetCompletedTodos,
+} from '@/resources/hooks/todo.hooks';
+import TodosItem from './todo-item';
+import { AddTaskWrapper } from './add-task-button';
 
 export default function TodoList() {
-  const {
-    data: todosData,
-    refetch: refetchTodos,
-    isLoading: isTodosLoading,
-  } = useGetTodos();
+  const { data: incompleteTodosData, isLoading: isIncompleteTodosLoading } =
+    useGetIncompleteTodos();
 
-  if (isTodosLoading) {
+  const { data: completedTodosData, isLoading: isCompletedTodosLoading } =
+    useGetCompletedTodos();
+
+  if (isIncompleteTodosLoading || isCompletedTodosLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="xl:px-60 h-full w-full pt-8">
+    <div className="xl:px-60 h-full w-full pt-8 flex-col">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Entrada</h1>
       </div>
-      <div className="flex flex-col gap-1 py-4">
-        <div className="flex items-center space-x-2">
-          {todosData?.map(({ taskName }, index) => (
-            <div key={index}>
-              <Checkbox className="rounded-full" id={`todo-${index}`} />
-              <label
-                htmlFor={`todo-${index}`}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-aloowed peer-disabled:opacity-70"
-              >
-                {taskName}
-              </label>
-            </div>
-          ))}
-        </div>
+      <div className="w-full  flex flex-col gap-1 py-4">
+        <TodosItem items={incompleteTodosData || []} />
       </div>
+      <AddTaskWrapper />
+      <div className="w-full flex flex-col gap-1 py-4">
+        <TodosItem items={completedTodosData || []} />
+      </div>
+      <div className="flex flex-col gap-1 py-4"></div>
     </div>
   );
 }
