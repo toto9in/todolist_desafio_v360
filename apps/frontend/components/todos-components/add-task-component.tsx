@@ -113,6 +113,9 @@ export default function AddTaskComponent({
         await queryClient.invalidateQueries({
           queryKey: ['get-incomplete-todos'],
         });
+        await queryClient.invalidateQueries({
+          queryKey: ['get-today-todos'],
+        });
         toast({
           title: `Tarefa adicionada`,
           duration: 3000,

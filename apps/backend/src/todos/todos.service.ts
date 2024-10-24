@@ -80,7 +80,79 @@ export class TodosService {
         parentId: null,
       },
       include: {
-        subTodos: true,
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return todos;
+  }
+
+  async getTodayTodos(userId: string) {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59);
+
+    const todos = this.prisma.todos.findMany({
+      omit: {
+        userId: true,
+      },
+      where: {
+        userId: userId,
+        dueDate: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+        parentId: null,
+      },
+      include: {
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return todos;
+  }
+
+  async getOverdueTodos(userId: string) {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0);
+
+    const todos = await this.prisma.todos.findMany({
+      where: {
+        userId: userId,
+        isCompleted: false,
+        parentId: null,
+        dueDate: {
+          lt: todayStart,
+        },
+      },
+      include: {
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
       },
     });
 

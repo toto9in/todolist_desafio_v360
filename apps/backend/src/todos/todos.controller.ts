@@ -38,6 +38,16 @@ export class TodosController {
     return this.todosService.getCompletedTodos(user.userId);
   }
 
+  @Get('today')
+  getToday(@GetUser() user: { userId: string }) {
+    return this.todosService.getTodayTodos(user.userId);
+  }
+
+  @Get('overdue')
+  getOverdueTodos(@GetUser() user: { userId: string }) {
+    return this.todosService.getOverdueTodos(user.userId);
+  }
+
   @Get(':id')
   findOne(
     @GetUser() user: { userId: string },

@@ -69,6 +69,28 @@ export class TodoApi {
     }
   }
 
+  async getTodayTodos() {
+    try {
+      const { data } =
+        await this.axiosInstance.get<IResultGetTodos>(`todos/today`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
+  async getOverdueTodos() {
+    try {
+      const { data } =
+        await this.axiosInstance.get<IResultGetTodos>(`todos/overdue`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
   async checkTodo(id: number) {
     try {
       await this.axiosInstance.patch(`todos/${id}/check`);

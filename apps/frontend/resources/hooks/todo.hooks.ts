@@ -23,6 +23,24 @@ export const useGetCompletedTodos = () => {
   });
 };
 
+export const useGetTodayTodos = () => {
+  return useQuery({
+    queryKey: ['get-today-todos'],
+    queryFn: async () => {
+      return await todoApi.getTodayTodos();
+    },
+  });
+};
+
+export const useGetOverdueTodos = () => {
+  return useQuery({
+    queryKey: ['get-overdue-todos'],
+    queryFn: async () => {
+      return await todoApi.getOverdueTodos();
+    },
+  });
+};
+
 export const useSetCheckTodo = () => {
   return useMutation({
     mutationKey: ['set-check-todo'],
