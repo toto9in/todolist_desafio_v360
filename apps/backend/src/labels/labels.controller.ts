@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { LabelsService } from './labels.service';
 import { CreateLabelDto } from './dto/create-label.dto';
@@ -30,17 +31,10 @@ export class LabelsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.labelsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLabelDto: UpdateLabelDto) {
-    return this.labelsService.update(+id, updateLabelDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.labelsService.remove(+id);
+  getById(
+    @GetUser() user: { userId: string },
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.labelsService.getById(user.userId, id);
   }
 }

@@ -102,7 +102,7 @@ model Todos {
   dueDate     DateTime
   priority    String?
   isCompleted Boolean  @default(false)
-  parentId    Int?     @unique
+  parentId    Int?     
 
   project   Projects?   @relation(fields: [projectId], references: [id])
   parent    Todos?      @relation("TodoHierarchy", fields: [parentId], references: [id])

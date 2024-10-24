@@ -57,7 +57,7 @@ export default function TodosItem({ items }: TodoItemProps) {
         });
       }
     },
-    [uncheckTodo, checkTodo, toast, queryClient]
+    [uncheckTodo, checkTodo, toast, invalidateTodoQueries]
   );
 
   return items?.map((task) => (

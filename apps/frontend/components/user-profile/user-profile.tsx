@@ -1,17 +1,21 @@
-"use client";
+'use client';
 
-import { useSession, signOut } from "next-auth/react";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import { useSession, signOut } from 'next-auth/react';
+import { Button } from '../ui/button';
+import Image from 'next/image';
+import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
 import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+} from '../ui/dropdown-menu';
+import { LogOut } from 'lucide-react';
+
+const truncateName = (name: string) => {
+  return name.length > 20 ? name.substring(0, 20) + '...' : name;
+};
 
 export const UserProfile = () => {
   const { data: session } = useSession();
@@ -24,18 +28,20 @@ export const UserProfile = () => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full justify-start items-center gap-2 pl-0 hover:bg-purple-100 hover:text-purple-700"
+          className="w-full flex justify-start items-center gap-2 pl-0 hover:bg-purple-100 hover:text-purple-700"
         >
           {imageUrl && (
             <Image
               className="rounded-full"
-              src={session?.user?.image ?? "/default-profile.png"}
+              src={session?.user?.image ?? '/default-profile.png'}
               height={28}
               width={28}
               alt="picture"
             />
           )}
-          <span className="font-semibold">{userName}</span>
+          <span className="font-semibold flex ">
+            {truncateName(userName ?? '')}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -45,7 +51,7 @@ export const UserProfile = () => {
           <Button
             variant="ghost"
             className="w-full flex justify-start hover:bg-purple-100 hover:text-purple-700"
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={() => signOut({ callbackUrl: '/' })}
           >
             <LogOut />
             <span>Sign Out</span>

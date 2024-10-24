@@ -32,7 +32,7 @@ export default function Task({
     >
       <Dialog>
         <div className="flex gap-2 items-center justify-end w-full">
-          <div className="flex gap-2 w-full">
+          <div className="flex gap-2 w-full items-center">
             <Checkbox
               id="todo"
               className={clsx(
@@ -70,7 +70,6 @@ export default function Task({
               </div>
             </DialogTrigger>
           </div>
-          {/* {!isSubTodo(data) && <AddTaskDialog data={data} />} */}
           <TaskDialog data={data} />
         </div>
       </Dialog>

@@ -7,6 +7,8 @@ export interface IResultTodos {
   priority: string;
   isCompleted: boolean;
   parentId: number | null;
+  labelId: number | null;
+  subTodos: IResultTodos[];
 }
 
 export type IResultGetTodos = IResultTodos[];

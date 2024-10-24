@@ -54,7 +54,15 @@ export class TodosService {
         parentId: null,
       },
       include: {
-        subTodos: true,
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -131,9 +139,5 @@ export class TodosService {
         isCompleted: false,
       },
     });
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
   }
 }

@@ -1,7 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
 import { IResultGetTodos } from './interfaces/result-get-todos.interface';
-import { IResultGetProjects } from './interfaces/result-get-projects.interface';
-import { IResultGetLabels } from './interfaces/result-get-labels.interface';
+import {
+  IResultGetProjects,
+  IResultProject,
+} from './interfaces/result-get-projects.interface';
+import {
+  IResultGetLabels,
+  IResultLabel,
+} from './interfaces/result-get-labels.interface';
 import { ICreateTaskDto } from './interfaces/create-task-dto.interface';
 
 export class TodoApi {
@@ -92,9 +98,41 @@ export class TodoApi {
     }
   }
 
+  async getProjectById(id: number | null) {
+    try {
+      if (!id) {
+        return null;
+      }
+
+      const { data } = await this.axiosInstance.get<IResultProject>(
+        `projects/${id}`
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
+    }
+  }
+
   async getLabels() {
     try {
       const { data } = await this.axiosInstance.get<IResultGetLabels>(`labels`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching labels:', error);
+      throw error;
+    }
+  }
+
+  async getLabelById(id: number | null) {
+    try {
+      if (!id) {
+        return null;
+      }
+
+      const { data } = await this.axiosInstance.get<IResultLabel>(
+        `labels/${id}`
+      );
       return data;
     } catch (error) {
       console.error('Error fetching labels:', error);

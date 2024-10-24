@@ -50,11 +50,31 @@ export const useGetProjects = () => {
   });
 };
 
+export const useGetProjectById = (id: number | null) => {
+  return useQuery({
+    queryKey: ['get-project-by-id', id],
+    queryFn: async ({ queryKey }) => {
+      const [, projectId] = queryKey;
+      return await todoApi.getProjectById(projectId as number);
+    },
+  });
+};
+
 export const useGetLabels = () => {
   return useQuery({
     queryKey: ['get-labels'],
     queryFn: async () => {
       return await todoApi.getLabels();
+    },
+  });
+};
+
+export const useGetLabelById = (id: number | null) => {
+  return useQuery({
+    queryKey: ['get-label-by-id', id],
+    queryFn: async ({ queryKey }) => {
+      const [, labelId] = queryKey;
+      return await todoApi.getLabelById(labelId as number);
     },
   });
 };

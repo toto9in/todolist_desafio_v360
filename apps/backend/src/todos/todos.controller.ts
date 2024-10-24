@@ -61,9 +61,4 @@ export class TodosController {
   ) {
     return this.todosService.uncheck(user.email, id);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todosService.remove(+id);
-  }
 }

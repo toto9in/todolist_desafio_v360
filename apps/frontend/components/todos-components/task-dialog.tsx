@@ -6,42 +6,63 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
-import { Calendar, ChevronDown, Flag, Trash2 } from 'lucide-react';
+import { Calendar, ChevronDown, Flag, Hash, Tag, Trash2 } from 'lucide-react';
 import { Label } from '../ui/label';
 import { useMemo } from 'react';
 import { format } from 'date-fns';
+import { useGetProjectById } from '@/resources/hooks/todo.hooks';
+import Task from './task';
+import TodosItem from './todo-item';
+import { AddTaskWrapper } from './add-task-button';
 
 interface TaskDialogProps {
   data: IResultTodos;
 }
 
 export default function TaskDialog({ data }: TaskDialogProps) {
-  const { taskName, description, projectId, priority, dueDate, id } = data;
+  const {
+    taskName,
+    description,
+    projectId,
+    priority,
+    dueDate,
+    labelId,
+    id,
+    subTodos,
+  } = data;
 
-  // TODO
-  // add hook to get project by id
+  const { data: project } = useGetProjectById(projectId);
+  const { data: label } = useGetProjectById(labelId ?? 0);
 
   const { toast } = useToast();
 
   //Todo
   // verify if the task has children
 
-  //TODO
-  // add hooks to check and uncheck after
+  const incompleteSubTodos = useMemo(() => {
+    if (!subTodos) return [];
+
+    return subTodos.filter((todo) => !todo.isCompleted);
+  }, [subTodos]);
+
+  const completedSubTodos = useMemo(() => {
+    if (!subTodos) return [];
+
+    return subTodos.filter((todo) => todo.isCompleted);
+  }, [subTodos]);
+
+  const parentId = data.id;
 
   // TODO
   // add hook to delete task
 
-  //todo alterar no back para projetos poder ter o userId nulo
-  // para buscar por Id do projeto e não do usuário
-
   const todoDetails = useMemo(() => {
     const data = [
-      //   {
-      //     labelName: 'Project',
-      //     value: project?.name || '',
-      //     icon: <Hash className="w-4 h-4 text-primary capitalize" />,
-      //   },
+      {
+        labelName: 'Project',
+        value: project?.name || '',
+        icon: <Hash className="w-4 h-4 text-primary capitalize" />,
+      },
       {
         labelName: 'Due date',
         value: format(new Date(dueDate) || new Date(), 'MMM dd yyyy'),
@@ -52,14 +73,14 @@ export default function TaskDialog({ data }: TaskDialogProps) {
         value: priority?.toString() || '',
         icon: <Flag className="w-4 h-4 text-primary capitalize" />,
       },
-      // {
-      //   labelName: 'Label',
-      //   value: label?.name || '',
-      //   icon: <Tag className="w-4 h-4 text-primary capitalize" />,
-      // },
+      {
+        labelName: 'Label',
+        value: label?.name || '',
+        icon: <Tag className="w-4 h-4 text-primary capitalize" />,
+      },
     ];
     return data;
-  }, [dueDate, priority]);
+  }, [dueDate, priority, project, label]);
 
   const handleDeleteTodo = (e: any) => {
     e.preventDefault();
@@ -84,33 +105,11 @@ export default function TaskDialog({ data }: TaskDialogProps) {
             </div>
           </div>
           <div className="pl-4">
-            {/* {inCompletedSubtodosByProject.map((task) => {
-              return (
-                <Task
-                  key={task._id}
-                  data={task}
-                  isCompleted={task.isCompleted}
-                  handleOnChange={() =>
-                    checkASubTodoMutation({ taskId: task._id })
-                  }
-                />
-              );
-            })} */}
+            <TodosItem items={incompleteSubTodos} />
             <div className="pb-4">
-              {/* <AddTaskWrapper parentTask={data} /> */}
+              <AddTaskWrapper parentId={parentId} />
             </div>
-            {/* {completedSubtodosByProject.map((task) => {
-              return (
-                <Task
-                  key={task._id}
-                  data={task}
-                  isCompleted={task.isCompleted}
-                  handleOnChange={() =>
-                    unCheckASubTodoMutation({ taskId: task._id })
-                  }
-                />
-              );
-            })} */}
+            <TodosItem items={completedSubTodos} />
           </div>
         </DialogDescription>
       </DialogHeader>

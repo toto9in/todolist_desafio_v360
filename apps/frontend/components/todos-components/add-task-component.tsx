@@ -55,8 +55,10 @@ const defaultValues = {
 
 export default function AddTaskComponent({
   setShowAddTask,
+  parentId,
 }: {
   setShowAddTask: (value: boolean) => void;
+  parentId?: number;
 }) {
   const form = useForm<z.infer<typeof createTaskFormSchema>>({
     resolver: zodResolver(createTaskFormSchema),
@@ -103,7 +105,7 @@ export default function AddTaskComponent({
         dueDate: new Date().toISOString(),
         priority: data.priority,
         labelId: data.labelId ?? null,
-        parentId: null,
+        parentId: parentId ?? null,
       };
 
       await createTask.mutateAsync(createTaskDto).then(async () => {

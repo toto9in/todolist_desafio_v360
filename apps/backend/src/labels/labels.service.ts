@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLabelDto } from './dto/create-label.dto';
 import { UpdateLabelDto } from './dto/update-label.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -43,15 +43,18 @@ export class LabelsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} label`;
-  }
+  async getById(userId: string | null, id: number) {
+    const label = await this.prisma.labels.findFirst({
+      where: {
+        id: id,
+        OR: [{ userId: null }, { userId: userId }],
+      },
+    });
 
-  update(id: number, updateLabelDto: UpdateLabelDto) {
-    return `This action updates a #${id} label`;
-  }
+    if (!label) {
+      return new NotFoundException(`Label with ID ${id} not found`);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} label`;
+    return label;
   }
 }
