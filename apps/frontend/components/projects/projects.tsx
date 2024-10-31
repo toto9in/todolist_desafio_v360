@@ -16,7 +16,7 @@ export default function ProjectsList() {
       <div className="w-full  flex flex-col gap-1 py-4">
         {projectsData?.map((project) => {
           return (
-            <Link key={project.id} href={`/projects/${project.id}`}>
+            <Link key={project.id} href={`/todos/projects/${project.id}`}>
               <div className="flex items-center space-x-2 border-b-2 p-2 border-gray-100">
                 <Hash className="text-primary h-5 w-5" />
                 <Label

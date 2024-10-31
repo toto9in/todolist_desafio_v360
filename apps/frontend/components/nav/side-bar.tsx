@@ -30,7 +30,7 @@ const items = [
   },
   {
     title: 'Hoje',
-    url: '/today',
+    url: '/todos/today',
     icon: <Calendar className="w-4 h-4 text-primary" />,
   },
   {
@@ -89,7 +89,7 @@ export function TodoSideBar() {
                 variant="ghost"
                 className={`w-full justify-between ${purpleHoverClass} ${isActive('/projects')}`}
               >
-                <Link href={'/projects'} className="flex gap-2">
+                <Link href={'/todos/projects'} className="flex gap-2">
                   Meus Projetos
                   <Plus className={`h-5 w-5  ${purpleIconClass}`} />
                 </Link>
@@ -99,7 +99,7 @@ export function TodoSideBar() {
               {projectsData?.map((project) => (
                 <SidebarMenuSubItem key={project.name}>
                   <SidebarMenuSubButton asChild>
-                    <Link href={`/projects/${project.id}`}>
+                    <Link href={`/todos/projects/${project.id}`}>
                       <Button
                         variant="ghost"
                         className={`w-full justify-start gap-2 ${purpleHoverClass} `}

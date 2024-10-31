@@ -3,8 +3,6 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Providers from './_providers/Providers';
 import { Toaster } from '@/components/ui/toaster';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { TodoSideBar } from '@/components/nav/side-bar';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,13 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         suppressHydrationWarning={true}
       >
-        <Providers>
-          <SidebarProvider>
-            <TodoSideBar />
-            <SidebarTrigger />
-            {children}
-          </SidebarProvider>
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
