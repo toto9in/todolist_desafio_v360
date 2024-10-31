@@ -21,6 +21,6 @@ O que o projeto já tem implementado
 
 O que está em andamento para implementação:
   - Usuario pode criar um projeto (uma lista com um nome especifico para determinadas tarefas relacionadas a esse projeto)
-  - Visualização das telas de cada projeto e as tasks relacionadas a esse projeto
+  - Visualização das telas de cada projeto e as tasks relacionadas a esse projeto (quase finalizado)
   - Criação de labels.
 
