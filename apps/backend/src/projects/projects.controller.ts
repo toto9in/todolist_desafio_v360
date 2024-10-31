@@ -27,6 +27,11 @@ export class ProjectsController {
     return this.projectsService.getAllProjects(user.userId);
   }
 
+  @Get('projects-page')
+  getProjectsForProjectsPage(@GetUser() user: { userId: string }) {
+    return this.projectsService.getProjectsForProjectsPage(user.userId);
+  }
+
   @Get(':id')
   getById(
     @GetUser() user: { userId: string },

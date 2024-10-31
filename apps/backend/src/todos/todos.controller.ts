@@ -56,6 +56,14 @@ export class TodosController {
     return this.todosService.findOne(user.userId, id);
   }
 
+  @Get('project/:projectId')
+  getTodosByProject(
+    @GetUser() user: { userId: string },
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ) {
+    return this.todosService.getTodosByProject(user.userId, projectId);
+  }
+
   @Patch(':id/check')
   checkTodo(
     @GetUser() user: GoogleLoginUserDto,

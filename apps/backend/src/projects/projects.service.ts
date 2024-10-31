@@ -42,6 +42,19 @@ export class ProjectsService {
     });
   }
 
+  async getProjectsForProjectsPage(userId: string) {
+    const systemProjects = await this.getSystemProjects();
+    const userProjects = await this.getUserProjects(userId);
+
+    const systemProjectsWithoutInbox = systemProjects.filter(
+      (project) => project.name !== 'Inbox',
+    );
+
+    const projects = [...systemProjectsWithoutInbox, ...userProjects];
+
+    return projects;
+  }
+
   async getById(userId: string | null, id: number) {
     const project = await this.prisma.projects.findFirst({
       where: {

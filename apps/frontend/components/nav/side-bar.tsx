@@ -1,5 +1,5 @@
 'use client';
-import { Calendar, CheckCircle2, Inbox, Plus, Tag } from 'lucide-react';
+import { Calendar, CheckCircle2, Hash, Inbox, Plus, Tag } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -15,9 +15,9 @@ import {
 } from '../ui/sidebar';
 import { UserProfile } from '../user-profile/user-profile';
 import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useGetProjectsForProjectsPage } from '@/resources/hooks/todo.hooks';
 
 const purpleHoverClass = 'hover:bg-purple-100 hover:text-purple-700';
 const purpleIconClass = 'text-purple-600';
@@ -45,18 +45,14 @@ const items = [
   },
 ];
 
-const projects = [
-  { name: 'Personal', color: 'bg-blue-500' },
-  { name: 'Work', color: 'bg-green-500' },
-  { name: 'Shopping', color: 'bg-yellow-500' },
-];
-
 export function TodoSideBar() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
     return href === pathname ? 'bg-purple-100 text-purple-700' : '';
   };
+
+  const { data: projectsData } = useGetProjectsForProjectsPage();
 
   return (
     <Sidebar>
@@ -89,26 +85,29 @@ export function TodoSideBar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="font-semibold">
               <Button
+                asChild
                 variant="ghost"
-                className={`w-full justify-between ${purpleHoverClass}`}
+                className={`w-full justify-between ${purpleHoverClass} ${isActive('/projects')}`}
               >
-                Projects
-                <Plus className={`h-5 w-5 ${purpleIconClass}`} />
+                <Link href={'/projects'} className="flex gap-2">
+                  Meus Projetos
+                  <Plus className={`h-5 w-5  ${purpleIconClass}`} />
+                </Link>
               </Button>
             </SidebarMenuButton>
             <SidebarMenuSub>
-              {projects.map((project) => (
+              {projectsData?.map((project) => (
                 <SidebarMenuSubItem key={project.name}>
                   <SidebarMenuSubButton asChild>
-                    <Button
-                      variant="ghost"
-                      className={`w-full justify-start gap-2 ${purpleHoverClass} `}
-                    >
-                      <div
-                        className={cn('h-2 w-2 rounded-full', project.color)}
-                      />
-                      {project.name}
-                    </Button>
+                    <Link href={`/projects/${project.id}`}>
+                      <Button
+                        variant="ghost"
+                        className={`w-full justify-start gap-2 ${purpleHoverClass} `}
+                      >
+                        <Hash className="h-5 w-5 text-primary" />
+                        {project.name}
+                      </Button>
+                    </Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               ))}

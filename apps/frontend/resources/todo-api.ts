@@ -109,6 +109,18 @@ export class TodoApi {
     }
   }
 
+  async getTodosByProject(projectId: number) {
+    try {
+      const { data } = await this.axiosInstance.get<IResultGetTodos>(
+        `todos/project/${projectId}`
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
   async getProjects() {
     try {
       const { data } =
@@ -128,6 +140,18 @@ export class TodoApi {
 
       const { data } = await this.axiosInstance.get<IResultProject>(
         `projects/${id}`
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
+    }
+  }
+
+  async getProjectsForProjectsPage() {
+    try {
+      const { data } = await this.axiosInstance.get<IResultGetProjects>(
+        `projects/projects-page`
       );
       return data;
     } catch (error) {

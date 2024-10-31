@@ -59,6 +59,16 @@ export const useSetUncheckTodo = () => {
   });
 };
 
+export const useGetTodosByProject = (projectId: number) => {
+  return useQuery({
+    queryKey: ['get-todos-by-project', projectId],
+    queryFn: async ({ queryKey }) => {
+      const [, projectId] = queryKey;
+      return await todoApi.getTodosByProject(projectId as number);
+    },
+  });
+};
+
 export const useGetProjects = () => {
   return useQuery({
     queryKey: ['get-projects'],
@@ -74,6 +84,15 @@ export const useGetProjectById = (id: number | null) => {
     queryFn: async ({ queryKey }) => {
       const [, projectId] = queryKey;
       return await todoApi.getProjectById(projectId as number);
+    },
+  });
+};
+
+export const useGetProjectsForProjectsPage = () => {
+  return useQuery({
+    queryKey: ['get-projects-for-projects-page'],
+    queryFn: async () => {
+      return await todoApi.getProjectsForProjectsPage();
     },
   });
 };

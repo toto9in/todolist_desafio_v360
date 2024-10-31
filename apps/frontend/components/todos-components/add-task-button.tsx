@@ -2,11 +2,23 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import AddTaskComponent from './add-task-component';
 
-export const AddTaskWrapper = ({ parentId }: { parentId?: number }) => {
+export const AddTaskWrapper = ({
+  parentId,
+  projectId,
+}: {
+  parentId?: number;
+  projectId?: number;
+}) => {
   const [showAddTask, setShowAddTask] = useState(false);
 
+  console.log('projectId', projectId);
+
   return showAddTask ? (
-    <AddTaskComponent setShowAddTask={setShowAddTask} parentId={parentId} />
+    <AddTaskComponent
+      setShowAddTask={setShowAddTask}
+      parentId={parentId}
+      projectId={projectId}
+    />
   ) : (
     <AddTaskButton onClick={() => setShowAddTask(true)} />
   );

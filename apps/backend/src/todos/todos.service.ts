@@ -49,6 +49,7 @@ export class TodosService {
         userId: true,
       },
       where: {
+        projectId: 1,
         userId: userId,
         isCompleted: false,
         parentId: null,
@@ -75,6 +76,7 @@ export class TodosService {
         userId: true,
       },
       where: {
+        projectId: 1,
         userId: userId,
         isCompleted: true,
         parentId: null,
@@ -142,6 +144,40 @@ export class TodosService {
         dueDate: {
           lt: todayStart,
         },
+      },
+      include: {
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return todos;
+  }
+
+  async getTodosByProject(userId: string, projectId: number) {
+    const project = await this.prisma.projects.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) {
+      return new NotFoundException(`Project with ID ${projectId} not found`);
+    }
+
+    const todos = this.prisma.todos.findMany({
+      omit: {
+        userId: true,
+      },
+      where: {
+        userId: userId,
+        projectId: projectId,
+        parentId: null,
       },
       include: {
         subTodos: {

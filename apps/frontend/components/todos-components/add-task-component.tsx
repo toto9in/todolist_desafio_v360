@@ -56,9 +56,11 @@ const defaultValues = {
 export default function AddTaskComponent({
   setShowAddTask,
   parentId,
+  projectId: userProjectId,
 }: {
   setShowAddTask: (value: boolean) => void;
   parentId?: number;
+  projectId?: number;
 }) {
   const form = useForm<z.infer<typeof createTaskFormSchema>>({
     resolver: zodResolver(createTaskFormSchema),
@@ -67,7 +69,7 @@ export default function AddTaskComponent({
       description: '',
       dueDate: new Date(),
       priority: '4',
-      projectId: 1,
+      projectId: userProjectId ? userProjectId : 1,
       labelId: null,
     },
   });
@@ -124,7 +126,7 @@ export default function AddTaskComponent({
         form.reset({ ...defaultValues });
       });
     },
-    [createTask, queryClient, setShowAddTask, form, toast]
+    [createTask, queryClient, setShowAddTask, form, toast, parentId]
   );
 
   return (
