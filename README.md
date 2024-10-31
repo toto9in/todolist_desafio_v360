@@ -26,3 +26,6 @@ O que está em andamento para implementação:
   - Visualização das telas de cada projeto e as tasks relacionadas a esse projeto (quase finalizado)
   - Criação de labels.
 
+Peço desculpas que não tive tempo suficiente devido à alguns compromissos que passei nas ultimas semanas de dar deploy no projeto e configurar aq no no readme como rodar o projeto (necessita de algumas envs do supabase e do google auth).
+Pretendia dar deploy da aplicação, mas mostrarei rodando local.
+
