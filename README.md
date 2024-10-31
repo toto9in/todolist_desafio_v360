@@ -3,6 +3,8 @@ Esse repositório contem tanto a aplicação frontend quanto backend (estou util
 
 A aplicação é tem funcionalidades e aparence baseada no software já existente Todoist.
 Aqui está uma imagem do atual estado do projeto:
+![image](https://github.com/user-attachments/assets/11f99218-3f1a-4049-8385-c1104258a4b9)
+
 ![image](https://github.com/user-attachments/assets/ae5a6d5b-1eb0-4213-88b8-e728996717fa)
 
 # Tecnologias
