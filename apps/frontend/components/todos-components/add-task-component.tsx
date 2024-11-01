@@ -104,7 +104,7 @@ export default function AddTaskComponent({
         projectId: data.projectId,
         taskName: data.taskName,
         description: data.description,
-        dueDate: new Date().toISOString(),
+        dueDate: data.dueDate.toISOString(),
         priority: data.priority,
         labelId: data.labelId ?? null,
         parentId: parentId ?? null,
