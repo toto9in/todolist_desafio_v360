@@ -143,3 +143,12 @@ export const useCreateProject = () => {
     },
   });
 };
+
+export const useDeleteProject = () => {
+  return useMutation({
+    mutationKey: ['delete-project'],
+    mutationFn: async (id: number) => {
+      return await todoApi.deleteProject(id);
+    },
+  });
+};

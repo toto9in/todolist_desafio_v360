@@ -76,11 +76,26 @@ export class ProjectsService {
     return project;
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
-  }
+  async delete(userId: string, id: number) {
+    const todos = await this.prisma.todos.findMany({
+      where: {
+        projectId: id,
+        userId: userId,
+      },
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+    for (const todo of todos) {
+      await this.prisma.todos.delete({
+        where: {
+          id: todo.id,
+        },
+      });
+    }
+
+    return this.prisma.projects.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -41,5 +42,13 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     return this.projectsService.getById(user.userId, id);
+  }
+
+  @Delete(':id')
+  delete(
+    @GetUser() user: { userId: string },
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.projectsService.delete(user.userId, id);
   }
 }

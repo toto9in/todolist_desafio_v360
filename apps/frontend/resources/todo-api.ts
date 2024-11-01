@@ -181,6 +181,15 @@ export class TodoApi {
     }
   }
 
+  async deleteProject(id: number) {
+    try {
+      await this.axiosInstance.delete(`projects/${id}`);
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      throw error;
+    }
+  }
+
   async getLabels() {
     try {
       const { data } = await this.axiosInstance.get<IResultGetLabels>(`labels`);
