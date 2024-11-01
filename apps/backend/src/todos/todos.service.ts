@@ -161,7 +161,7 @@ export class TodosService {
     return todos;
   }
 
-  async getTodosByProject(userId: string, projectId: number) {
+  async getInCompleteTodosByProject(userId: string, projectId: number) {
     const project = await this.prisma.projects.findUnique({
       where: { id: projectId },
     });
@@ -176,6 +176,42 @@ export class TodosService {
       },
       where: {
         userId: userId,
+        isCompleted: false,
+        projectId: projectId,
+        parentId: null,
+      },
+      include: {
+        subTodos: {
+          include: {
+            subTodos: {
+              include: {
+                subTodos: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return todos;
+  }
+
+  async getCompleteTodosByProject(userId: string, projectId: number) {
+    const project = await this.prisma.projects.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) {
+      return new NotFoundException(`Project with ID ${projectId} not found`);
+    }
+
+    const todos = this.prisma.todos.findMany({
+      omit: {
+        userId: true,
+      },
+      where: {
+        userId: userId,
+        isCompleted: true,
         projectId: projectId,
         parentId: null,
       },

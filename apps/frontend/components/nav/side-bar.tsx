@@ -18,6 +18,7 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useGetProjectsForProjectsPage } from '@/resources/hooks/todo.hooks';
+import { getProjectName } from '@/resources/utils/projects-record';
 
 const purpleHoverClass = 'hover:bg-purple-100 hover:text-purple-700';
 const purpleIconClass = 'text-purple-600';
@@ -105,7 +106,7 @@ export function TodoSideBar() {
                         className={`w-full justify-start gap-2 ${purpleHoverClass} `}
                       >
                         <Hash className="h-5 w-5 text-primary" />
-                        {project.name}
+                        {getProjectName(project.name)}
                       </Button>
                     </Link>
                   </SidebarMenuSubButton>

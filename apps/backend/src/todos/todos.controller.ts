@@ -56,12 +56,23 @@ export class TodosController {
     return this.todosService.findOne(user.userId, id);
   }
 
-  @Get('project/:projectId')
-  getTodosByProject(
+  @Get('project/:projectId/incomplete')
+  getInCompleteTodosByProject(
     @GetUser() user: { userId: string },
     @Param('projectId', ParseIntPipe) projectId: number,
   ) {
-    return this.todosService.getTodosByProject(user.userId, projectId);
+    return this.todosService.getInCompleteTodosByProject(
+      user.userId,
+      projectId,
+    );
+  }
+
+  @Get('project/:projectId/complete')
+  getCompleteTodosByProject(
+    @GetUser() user: { userId: string },
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ) {
+    return this.todosService.getCompleteTodosByProject(user.userId, projectId);
   }
 
   @Patch(':id/check')

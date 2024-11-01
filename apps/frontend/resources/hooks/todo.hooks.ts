@@ -59,12 +59,22 @@ export const useSetUncheckTodo = () => {
   });
 };
 
-export const useGetTodosByProject = (projectId: number) => {
+export const useGetIncompleteTodosByProject = (projectId: number) => {
   return useQuery({
-    queryKey: ['get-todos-by-project', projectId],
+    queryKey: ['get-incomplete-todos-by-project', projectId],
     queryFn: async ({ queryKey }) => {
       const [, projectId] = queryKey;
-      return await todoApi.getTodosByProject(projectId as number);
+      return await todoApi.getIncompleteTodosByProject(projectId as number);
+    },
+  });
+};
+
+export const useGetCompleteTodosByProject = (projectId: number) => {
+  return useQuery({
+    queryKey: ['get-complete-todos-by-project', projectId],
+    queryFn: async ({ queryKey }) => {
+      const [, projectId] = queryKey;
+      return await todoApi.getCompleteTodosByProject(projectId as number);
     },
   });
 };

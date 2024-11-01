@@ -28,7 +28,7 @@ import {
 } from '@/resources/hooks/todo.hooks';
 import { useCallback, useMemo } from 'react';
 import labelsRecord from '@/resources/utils/labels-record';
-import projectsRecord from '@/resources/utils/projects-record';
+import { getProjectName } from '@/resources/utils/projects-record';
 import { ICreateTaskDto } from '@/resources/interfaces/create-task-dto.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -93,7 +93,7 @@ export default function AddTaskComponent({
 
   const projectOptions = useMemo(() => {
     return projectsData?.map((project) => ({
-      name: projectsRecord[project.name],
+      name: getProjectName(project.name),
       id: project.id.toString(),
     }));
   }, [projectsData]);

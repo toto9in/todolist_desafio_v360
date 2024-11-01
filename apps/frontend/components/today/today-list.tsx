@@ -24,10 +24,12 @@ export default function TodayList() {
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Hoje</h1>
       </div>
-      <div className="w-full flex flex-col gap-1 py-4">
-        <p className="font-bold flex text-sm">Atrasadas</p>
-        <TodosItem items={overdueTodosData || []} />
-      </div>
+      {!overdueTodosData && (
+        <div className="w-full flex flex-col gap-1 py-4">
+          <p className="font-bold flex text-sm">Atrasadas</p>
+          <TodosItem items={overdueTodosData || []} />
+        </div>
+      )}
       <div className="w-full flex flex-col gap-1 py-4">
         <p className="font-bold flex text-sm items-center border-b-2 p-2 border-gray-100">
           {moment(new Date()).format('LL')}

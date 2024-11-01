@@ -11,9 +11,9 @@ import { Label } from '../ui/label';
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { useGetProjectById } from '@/resources/hooks/todo.hooks';
-import Task from './task';
 import TodosItem from './todo-item';
 import { AddTaskWrapper } from './add-task-button';
+import { getProjectName } from '@/resources/utils/projects-record';
 
 interface TaskDialogProps {
   data: IResultTodos;
@@ -27,7 +27,6 @@ export default function TaskDialog({ data }: TaskDialogProps) {
     priority,
     dueDate,
     labelId,
-    id,
     subTodos,
   } = data;
 
@@ -35,9 +34,6 @@ export default function TaskDialog({ data }: TaskDialogProps) {
   const { data: label } = useGetProjectById(labelId ?? 0);
 
   const { toast } = useToast();
-
-  //Todo
-  // verify if the task has children
 
   const incompleteSubTodos = useMemo(() => {
     if (!subTodos) return [];
@@ -60,21 +56,21 @@ export default function TaskDialog({ data }: TaskDialogProps) {
     const data = [
       {
         labelName: 'Project',
-        value: project?.name || '',
+        value: getProjectName(project?.name ?? '') || '',
         icon: <Hash className="w-4 h-4 text-primary capitalize" />,
       },
       {
-        labelName: 'Due date',
+        labelName: 'Data de vencimento',
         value: format(new Date(dueDate) || new Date(), 'MMM dd yyyy'),
         icon: <Calendar className="w-4 h-4 text-primary capitalize" />,
       },
       {
-        labelName: 'Priority',
+        labelName: 'Prioridade',
         value: priority?.toString() || '',
         icon: <Flag className="w-4 h-4 text-primary capitalize" />,
       },
       {
-        labelName: 'Label',
+        labelName: 'Etiqueta',
         value: label?.name || '',
         icon: <Tag className="w-4 h-4 text-primary capitalize" />,
       },
@@ -84,7 +80,6 @@ export default function TaskDialog({ data }: TaskDialogProps) {
 
   const handleDeleteTodo = (e: any) => {
     e.preventDefault();
-    // deleteTodoMutation({ taskId: id });
     toast({
       title: 'Task deleted',
       description: 'Task has been deleted successfully',

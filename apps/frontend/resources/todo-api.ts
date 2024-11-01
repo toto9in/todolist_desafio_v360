@@ -109,10 +109,22 @@ export class TodoApi {
     }
   }
 
-  async getTodosByProject(projectId: number) {
+  async getIncompleteTodosByProject(projectId: number) {
     try {
       const { data } = await this.axiosInstance.get<IResultGetTodos>(
-        `todos/project/${projectId}`
+        `todos/project/${projectId}/incomplete`
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      throw error;
+    }
+  }
+
+  async getCompleteTodosByProject(projectId: number) {
+    try {
+      const { data } = await this.axiosInstance.get<IResultGetTodos>(
+        `todos/project/${projectId}/complete`
       );
       return data;
     } catch (error) {

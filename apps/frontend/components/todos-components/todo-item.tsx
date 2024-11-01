@@ -27,6 +27,12 @@ export default function TodosItem({ items }: TodoItemProps) {
     await queryClient.invalidateQueries({ queryKey: ['get-incomplete-todos'] });
     await queryClient.invalidateQueries({ queryKey: ['get-completed-todos'] });
     await queryClient.invalidateQueries({ queryKey: ['get-today-todos'] });
+    await queryClient.invalidateQueries({
+      queryKey: ['get-incomplete-todos-by-project'],
+    });
+    await queryClient.invalidateQueries({
+      queryKey: ['get-complete-todos-by-project'],
+    });
   }, [queryClient]);
 
   const handleOnChangeTodo = useCallback(
