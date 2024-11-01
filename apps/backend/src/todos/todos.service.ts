@@ -54,6 +54,11 @@ export class TodosService {
         isCompleted: false,
         parentId: null,
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
@@ -81,6 +86,11 @@ export class TodosService {
         isCompleted: true,
         parentId: null,
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
@@ -116,6 +126,11 @@ export class TodosService {
         },
         parentId: null,
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
@@ -145,6 +160,11 @@ export class TodosService {
           lt: todayStart,
         },
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
@@ -180,6 +200,11 @@ export class TodosService {
         projectId: projectId,
         parentId: null,
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
@@ -215,6 +240,11 @@ export class TodosService {
         projectId: projectId,
         parentId: null,
       },
+      orderBy: [
+        {
+          dueDate: 'asc',
+        },
+      ],
       include: {
         subTodos: {
           include: {
