@@ -11,8 +11,6 @@ export const AddTaskWrapper = ({
 }) => {
   const [showAddTask, setShowAddTask] = useState(false);
 
-  console.log('projectId', projectId);
-
   return showAddTask ? (
     <AddTaskComponent
       setShowAddTask={setShowAddTask}

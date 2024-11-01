@@ -8,8 +8,14 @@ import { LabelProjectsType } from '@prisma/client';
 export class ProjectsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createProjectDto: CreateProjectDto) {
-    return 'This action adds a new project';
+  async create(createProjectDto: CreateProjectDto, userId: string) {
+    return this.prisma.projects.create({
+      data: {
+        ...createProjectDto,
+        type: LabelProjectsType.USER,
+        userId,
+      },
+    });
   }
 
   async getAllProjects(userId: string) {

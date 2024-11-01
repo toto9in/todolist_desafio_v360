@@ -73,6 +73,7 @@ export default function TodosItem({ items }: TodoItemProps) {
       data={task}
       isCompleted={task.isCompleted}
       handleOnChange={() => handleOnChangeTodo(task)}
+      hasChildren={task.subTodos.length > 0}
     />
   ));
 }

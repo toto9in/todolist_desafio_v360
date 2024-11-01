@@ -134,3 +134,12 @@ export const useCreateTask = () => {
     },
   });
 };
+
+export const useCreateProject = () => {
+  return useMutation({
+    mutationKey: ['create-project'],
+    mutationFn: async (name: string) => {
+      return await todoApi.createProject(name);
+    },
+  });
+};

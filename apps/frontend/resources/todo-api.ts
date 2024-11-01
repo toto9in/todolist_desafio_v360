@@ -133,6 +133,15 @@ export class TodoApi {
     }
   }
 
+  async createProject(name: string) {
+    try {
+      await this.axiosInstance.post('projects', { name });
+    } catch (error) {
+      console.error('Error creating project:', error);
+      throw error;
+    }
+  }
+
   async getProjects() {
     try {
       const { data } =

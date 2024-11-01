@@ -19,6 +19,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useGetProjectsForProjectsPage } from '@/resources/hooks/todo.hooks';
 import { getProjectName } from '@/resources/utils/projects-record';
+import { useState } from 'react';
+import { CreateProjectDialog } from '../projects/create-project-dialog';
 
 const purpleHoverClass = 'hover:bg-purple-100 hover:text-purple-700';
 const purpleIconClass = 'text-purple-600';
@@ -47,6 +49,9 @@ const items = [
 ];
 
 export function TodoSideBar() {
+  const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] =
+    useState(false);
+
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -92,7 +97,18 @@ export function TodoSideBar() {
               >
                 <Link href={'/todos/projects'} className="flex gap-2">
                   Meus Projetos
-                  <Plus className={`h-5 w-5  ${purpleIconClass}`} />
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setIsCreateProjectDialogOpen(true);
+                    }}
+                  >
+                    <Plus className={`h-5 w-5  ${purpleIconClass}`} />
+                  </Button>
+                  <CreateProjectDialog
+                    isOpen={isCreateProjectDialogOpen}
+                    setIsCreateProjectDialogOpen={setIsCreateProjectDialogOpen}
+                  />
                 </Link>
               </Button>
             </SidebarMenuButton>

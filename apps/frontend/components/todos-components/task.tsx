@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Checkbox } from '../ui/checkbox';
 import { Dialog, DialogTrigger } from '../ui/dialog';
-import { Calendar, GitBranch } from 'lucide-react';
-import moment from 'moment';
+import { GitBranch } from 'lucide-react';
+
 import { IResultTodos } from '@/resources/interfaces/result-get-todos.interface';
 import TaskDialog from './task-dialog';
 
@@ -16,14 +16,14 @@ export default function Task({
   data,
   isCompleted,
   handleOnChange,
-  showDetails = false,
+  hasChildren = false,
 }: {
   data: IResultTodos;
   isCompleted: boolean;
   handleOnChange: () => void;
-  showDetails?: boolean;
+  hasChildren?: boolean;
 }) {
-  const { taskName, dueDate } = data;
+  const { taskName, description } = data;
 
   return (
     <div
@@ -32,7 +32,7 @@ export default function Task({
     >
       <Dialog>
         <div className="flex gap-2 items-center justify-end w-full">
-          <div className="flex gap-2 w-full items-center">
+          <div className="flex gap-2 w-full items-center justify-center">
             <Checkbox
               id="todo"
               className={clsx(
@@ -51,22 +51,20 @@ export default function Task({
                     isCompleted && 'line-through text-foreground/30'
                   )}
                 >
-                  {taskName}
-                </button>
-                {showDetails && (
-                  <div className="flex gap-2">
-                    <div className="flex items-center justify-center gap-1">
-                      <GitBranch className="w-3 h-3 text-foreground/70" />
-                      <p className="text-xs text-foreground/70"></p>
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <Calendar className="w-3 h-3 text-primary" />
-                      <p className="text-xs text-primary">
-                        {moment(dueDate).format('LL')}
-                      </p>
-                    </div>
+                  <div className="flex flex-col">
+                    <span className="">{taskName}</span>
+                    {description && (
+                      <span className="text-sm text-gray-500">
+                        {description}
+                      </span>
+                    )}
+                    {hasChildren && (
+                      <div className="flex pt-1">
+                        <GitBranch className="w-5 h-5 text-primary" />
+                      </div>
+                    )}
                   </div>
-                )}
+                </button>
               </div>
             </DialogTrigger>
           </div>
