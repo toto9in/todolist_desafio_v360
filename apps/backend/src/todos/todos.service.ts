@@ -284,4 +284,23 @@ export class TodosService {
       },
     });
   }
+
+  async deleteTodoWithSubTodos(userId: string, id: number) {
+    //usar recursao pq o Prisma n tem funcionalidade de deletar recursivamente kkkkkkkk
+    const deleteSubTodos = async (id: number) => {
+      const subTodos = await this.prisma.todos.findMany({
+        where: { parentId: id, userId: userId },
+      });
+
+      for (const subTodo of subTodos) {
+        await deleteSubTodos(subTodo.id);
+      }
+
+      await this.prisma.todos.delete({
+        where: { id: id },
+      });
+    };
+
+    await deleteSubTodos(id);
+  }
 }

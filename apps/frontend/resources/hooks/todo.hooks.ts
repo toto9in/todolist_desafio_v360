@@ -152,3 +152,12 @@ export const useDeleteProject = () => {
     },
   });
 };
+
+export const useDeleteTask = () => {
+  return useMutation({
+    mutationKey: ['delete-task'],
+    mutationFn: async (id: number) => {
+      return await todoApi.deleteTask(id);
+    },
+  });
+};

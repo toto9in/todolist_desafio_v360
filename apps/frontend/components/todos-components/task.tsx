@@ -1,16 +1,15 @@
 import clsx from 'clsx';
 import { Checkbox } from '../ui/checkbox';
 import { Dialog, DialogTrigger } from '../ui/dialog';
-import { GitBranch } from 'lucide-react';
+import { GitBranch, Trash2Icon } from 'lucide-react';
 
 import { IResultTodos } from '@/resources/interfaces/result-get-todos.interface';
 import TaskDialog from './task-dialog';
-
-// function isSubTodo(
-//   data: Doc<'todos'> | Doc<'subTodos'>
-// ): data is Doc<'subTodos'> {
-//   return 'parentId' in data;
-// }
+import { Button } from '../ui/button';
+import { DeleteDialog } from '../delete-dialog';
+import { useState } from 'react';
+import { useDeleteTask } from '@/resources/hooks/todo.hooks';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Task({
   data,
@@ -23,7 +22,13 @@ export default function Task({
   handleOnChange: () => void;
   hasChildren?: boolean;
 }) {
-  const { taskName, description } = data;
+  const [isDeleteTaskDialogOpen, setIsDeleteTaskDialogOpen] = useState(false);
+
+  const deleteTask = useDeleteTask();
+
+  const queryClient = useQueryClient();
+
+  const { taskName, description, id } = data;
 
   return (
     <div
@@ -68,9 +73,44 @@ export default function Task({
               </div>
             </DialogTrigger>
           </div>
+          <Button
+            variant="ghost"
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+              setIsDeleteTaskDialogOpen(true);
+            }}
+          >
+            <Trash2Icon className="text-red-500 h-5 w-5" />
+          </Button>
           <TaskDialog data={data} />
         </div>
       </Dialog>
+      <DeleteDialog
+        title="Deletar Tarefa"
+        description={`O projeto ${taskName} será permanentemente excluída.`}
+        isOpen={isDeleteTaskDialogOpen}
+        setIsOpen={setIsDeleteTaskDialogOpen}
+        deleteFunction={() =>
+          deleteTask.mutateAsync(id).then(async () => {
+            await queryClient.invalidateQueries({
+              queryKey: ['get-incomplete-todos'],
+            });
+            await queryClient.invalidateQueries({
+              queryKey: ['get-completed-todos'],
+            });
+            await queryClient.invalidateQueries({
+              queryKey: ['get-today-todos'],
+            });
+            await queryClient.invalidateQueries({
+              queryKey: ['get-incomplete-todos-by-project'],
+            });
+            await queryClient.invalidateQueries({
+              queryKey: ['get-complete-todos-by-project'],
+            });
+          })
+        }
+      />
     </div>
   );
 }

@@ -219,4 +219,13 @@ export class TodoApi {
   async createTask(createTaskDto: ICreateTaskDto) {
     return this.axiosInstance.post('todos', createTaskDto);
   }
+
+  async deleteTask(id: number) {
+    try {
+      await this.axiosInstance.delete(`todos/${id}`);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      throw error;
+    }
+  }
 }

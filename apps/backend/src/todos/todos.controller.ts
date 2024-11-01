@@ -90,4 +90,12 @@ export class TodosController {
   ) {
     return this.todosService.uncheck(user.email, id);
   }
+
+  @Delete(':id')
+  deleteTodo(
+    @GetUser() user: { userId: string },
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.todosService.deleteTodoWithSubTodos(user.userId, id);
+  }
 }
