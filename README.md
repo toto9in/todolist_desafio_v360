@@ -20,10 +20,10 @@ O que o projeto já tem implementado
 - Uma task pode ter subtasks (Esta modelado com o Prisma para que a entidade task tenha self-relation, uma task pode ter uma coleção de filhos que tambem sao uma task. tasks filhas referenciam ao id do pai)
 - Usuario pode dar check e uncheck nas tasks.
 - Usuario tem acesso à caixa de entrada e hoje.
+- Usuario pode criar um projeto (uma lista com um nome especifico para determinadas tarefas relacionadas a esse projeto)
+- Visualização das telas de cada projeto e as tasks relacionadas a esse projeto
 
 O que está em andamento para implementação:
-  - Usuario pode criar um projeto (uma lista com um nome especifico para determinadas tarefas relacionadas a esse projeto)
-  - Visualização das telas de cada projeto e as tasks relacionadas a esse projeto (quase finalizado)
   - Criação de labels.
 
 Peço desculpas que não tive tempo suficiente devido à alguns compromissos que passei nas ultimas semanas de dar deploy no projeto e configurar aq no no readme como rodar o projeto (necessita de algumas envs do supabase e do google auth).
