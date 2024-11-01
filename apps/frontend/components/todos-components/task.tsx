@@ -103,6 +103,9 @@ export default function Task({
               queryKey: ['get-today-todos'],
             });
             await queryClient.invalidateQueries({
+              queryKey: ['get-overdue-todos'],
+            });
+            await queryClient.invalidateQueries({
               queryKey: ['get-incomplete-todos-by-project'],
             });
             await queryClient.invalidateQueries({

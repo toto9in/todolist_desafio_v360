@@ -24,7 +24,7 @@ export default function TodayList() {
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Hoje</h1>
       </div>
-      {!overdueTodosData && (
+      {(overdueTodosData?.length ?? 0) > 0 && (
         <div className="w-full flex flex-col gap-1 py-4">
           <p className="font-bold flex text-sm">Atrasadas</p>
           <TodosItem items={overdueTodosData || []} />
